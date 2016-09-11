@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Travel Buddy</title>
+  </head>
+  <body>
+    <h2>Welcome to the Travel club lobby!</h2>
+    {% if messages %}
+        <div class="errors">
+          {% for message in messages %}
+            <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+          {% endfor %}
+        </div>
+    {% endif %}
+    {% if request.session.user%}
+        <h2>{{request.session.user}} You're successfully logged in!</h2>
+        <a href="{% url 'travel_user' %}">My Page</a>
+        <a href="{% url 'log_logout'%}">Logout</a>
+    {% endif %}
+    {% if not request.session.user%}
+      <h2>Here goes the register redirect</h2>
+    {% endif %}
+  </body>
+</html>

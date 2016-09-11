@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^', include('apps.main.urls')),
     url(r'^login', include('apps.login_reg.urls')),
     url(r'^books', include('apps.book_review.urls')),
+    url(r'^travel', include('apps.travel_plan.urls')),
 
 ]

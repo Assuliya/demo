@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Travel Buddy</title>
+  </head>
+  <body>
+    <h2>{{travel.destination}}</h2>
+    <p>Planned By: {{travel.user_id.username}}</p>
+    <p>Description: {{travel.plan}}</p>
+    <p>Travel Date From: {{travel.start}}</p>
+    <p>Travel Date To: {{travel.end}}</p>
+    <h3>Other user's joining the trip</h3>
+    {%  for join in joins %}
+      {% if request.session.user != join.user_id.id%}
+        <p>{{join.user_id.name}}</p>
+      {% endif %}
+    {% endfor %}
+    <a href="{% url 'travel_user'%}">Home</a>
+    <a href="{% url 'log_logout'%}">Logout</a>
+  </body>
+</html>
