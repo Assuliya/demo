@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Book Review</title>
+  </head>
+  <body>
+    <h3>Username:</h3>
+    <p>{{user.username}}</p>
+    <h3>Name:</h3>
+    <p>{{user.first_name}} {{user.last_name}}</p>
+    <h3>Email:</h3>
+    <p>{{user.email}}</p>
+    <h3>Total reviews:</h3>
+    <p>{{total}}</p>
+    <h4>Posted Reviews on the following books:</h4>
+    <ul>
+      {% for review in reviews %}
+        {% if review.book_id.title != '' %}
+        <li><a href="{% url 'books_specific' book_id=review.book_id.id%}">{{review.book_id.title}}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    <a href="{% url 'books_index' %}">Home</a>
+    <a href="{% url 'books_books' %}">Books</a>
+    <a href="{% url 'books_add' %}">Add Book and Review</a>
+    <a href="{% url 'log_logout' %}">Logout</a>
+  </body>
+</html>
