@@ -1,28 +1,32 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Book Review</title>
-  </head>
-  <body>
-    <h2>Welcome to the Bookclub lobby!</h1>
-    {% if messages %}
-        <div class="errors">
-          {% for message in messages %}
-            <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-          {% endfor %}
-        </div>
-    {% endif %}
-    {% if request.session.user%}
-        <h2>User {{request.session.user}}! You're successfully logged in!</h2>
-        <a href="{% url 'books_user' user_id=request.session.user %}">My Page</a>
-        <a href="{% url 'books_books' %}">Books</a>
-        <a href="{% url 'main_index'%}">Main</a>
-        <a href="{% url 'log_success'%}">Login User page</a>
-        <a href="{% url 'log_logout'%}">Logout</a>
-    {% endif %}
-    {% if not request.session.user%}
-      <h2>Here should be a registration transfer</h2>
-    {% endif %}
-</body>
-</html>
+{% extends "main/base.html" %}
+
+{% block title %}
+  Book Review Index Page
+{% endblock %}
+
+{% block css %}
+  {% load static %}<link rel="stylesheet" href="{% static 'books/css/main.css'%}">
+{% endblock %}
+
+{% block name %}
+  Book Club
+{% endblock %}
+
+{% block navi %}
+<a href="{% url 'main_index'%}">Main</a> -
+<a href="{% url 'log_success'%}">Success</a> -
+<a href="{% url 'books_index' %}">Book lobby</a> -
+<a href="{% url 'books_user' user_id=request.session.user %}">My Page</a> -
+<a href="{% url 'books_books' %}">Books</a> -
+<a href="{% url 'books_add' %}">Add Book and Review</a> -
+<a href="{% url 'log_logout'%}">Logout</a>
+{% endblock %}
+
+{% block content %}
+  <h2>Welcome to the Bookclub lobby!</h1>
+  <h2>User {{request.session.user}}! You're successfully logged in!</h2>
+{% endblock %}
+
+{% block footer %}
+  2016 - MyBlog
+{% endblock %}

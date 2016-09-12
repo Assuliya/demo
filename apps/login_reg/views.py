@@ -6,10 +6,14 @@ from django.core.exceptions import ObjectDoesNotExist
 import bcrypt
 
 def index(request):
+    if 'user' in request.session:
+        return redirect(reverse('log_success'))
     return render(request, 'login_reg_app/index.html')
 
 def success(request):
-    return render(request, 'login_reg_app/success.html')
+    user = User.objects.get(id = request.session['user'])
+    context = {'user':user}
+    return render(request, 'login_reg_app/success.html', context)
 
 def register_process(request):
     result = User.manager.validateReg(request)
@@ -27,7 +31,7 @@ def login_process(request):
     if result[0] == False:
         print_messages(request, result[1])
         return redirect(reverse('log_index'))
-    return log_user_in(request, result[1])
+    return log_user_in(request, result[2])
 
 def print_messages(request, message_list):
     for message in message_list:
@@ -35,6 +39,7 @@ def print_messages(request, message_list):
 
 def log_user_in(request, user):
     request.session['user'] = user.id
+    user = User.manager.get(id=request.session['user'])
     user.user_level = 1
     user.save(update_fields=None)
     return redirect(reverse('log_success'))

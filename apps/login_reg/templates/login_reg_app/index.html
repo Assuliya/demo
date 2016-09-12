@@ -30,7 +30,7 @@
     <form action="{% url 'log_login' %}" method='post'>
       {% csrf_token %}
       Email <input type="email" name="email">
-      Password <input type="old_password" name="password">
+      Password <input type="password" name="old_password">
       <input type="submit" value="Login">
     </form>
   </body>

@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Travel Buddy</title>
-  </head>
-  <body>
+{% extends "travel_plan/index.html" %}
+
+{% block title %}
+  Travel Buddy Specific Travel Page
+{% endblock %}
+
+{% block content %}
+    <h2>Add a Trip</h2>
+    {% if messages %}
+        <div class="errors">
+          {% for message in messages %}
+            <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+          {% endfor %}
+        </div>
+    {% endif %}
     <h2>{{travel.destination}}</h2>
     <p>Planned By: {{travel.user_id.username}}</p>
     <p>Description: {{travel.plan}}</p>
@@ -16,7 +24,5 @@
         <p>{{join.user_id.name}}</p>
       {% endif %}
     {% endfor %}
-    <a href="{% url 'travel_user'%}">Home</a>
-    <a href="{% url 'log_logout'%}">Logout</a>
-  </body>
-</html>
+
+{% endblock %}

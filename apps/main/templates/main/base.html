@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% block js %}{% endblock %}
+    {% block css %}{% endblock %}
+</head>
+<body>
+  <div id="top">{% block name %}{% endblock %}</div>
+  <div id="navi">{% block navi %}{% endblock %}</div>
+  <div id="content">{% block content %}{% endblock %}</div>
+  <div id="footer">{% block footer %}{% endblock %}</div>
+</body>
+</html>

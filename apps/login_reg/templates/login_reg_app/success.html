@@ -5,8 +5,15 @@
     <title>Success</title>
   </head>
   <body>
-    <h1>Welcome {{request.session.user}}! You've successfully logged in!</h1>
-    <a href="{% url 'log_logout' %}">Logout</a>
+    <h2>Welcome {{user.username}}!</h2>
+    <h3>You've successfully logged in!</h3>
+    <p>You're in the corridor. Please choose where you want to go</p>
+    <a href="{% url 'main_index' %}">Main Page</a> -
+    <a href="{% url 'dashboard_show' user_id=request.session.user%}">My room (My page)</a> -
+    <a href="{% url 'dashboard_dashboard' %}">Meetingroom (Dashboard)</a> -
+    <a href="{% url 'books_index' %}">Library (Books)</a> -
+    <a href="{% url 'travel_index' %}">Garden (Travel)</a> -
+    <a href="{% url 'log_logout' %}">Logout</a> -
     <a href="{% url 'log_delete' user_id=request.session.user%}">Delete</a>
   </body>
 </html>

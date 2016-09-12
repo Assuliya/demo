@@ -69,7 +69,7 @@ class UserManager(models.Manager):
 	        password = user.pw_hash.encode()
 	        loginpass = request.POST['old_password'].encode()
 	        if hashpw(loginpass, password) == password:
-	            return (True, errors)
+	            return (True, errors, user)
 	        else:
 	            errors.append("Sorry, the password you typed in does not match the existing password")
 	            return (False, errors)

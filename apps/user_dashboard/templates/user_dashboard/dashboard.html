@@ -1,53 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>User Dashboard</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-  <h1>Dashboard</h1>
-  <table>
-     <thead>
+{% extends "main/base.html" %}
+
+{% block title %}
+  Dashboard Page
+{% endblock %}
+
+{% block css %}
+  {% load static %}<link rel="stylesheet" href="{% static 'main/css/main.css'%}">
+{% endblock %}
+
+{% block name %}
+  Dashboard
+{% endblock %}
+
+{% block navi %}
+  <a href="{% url 'main_index'%}">Main</a> -
+  <a href="{% url 'log_success'%}">Success</a> -
+  <a href="{% url 'dashboard_dashboard'%}">Dashboard</a> -
+  <a href="{% url 'dashboard_show' user_id=request.session.user %}">User</a> -
+  <a href="{% url 'log_logout'%}">Logout</a>
+{% endblock %}
+
+{% block content %}
+<table>
+   <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Created at</th>
+        <th>User Status</th>
+      </tr>
+   </thead>
+   <tbody>
+     {%  for user in users %}
         <tr>
-          <th>Id</th>
-					<th>Name</th>
-          <th>Email</th>
-          <th>Created at</th>
-          <th>User Status</th>
+          {% if user.id == request.session.user%}
+              <th class="user_text">{{user.id}}</th>
+              <th><a href="{% url 'dashboard_show' user_id=user.id%}">{{user.first_name}} {{user.last_name}}</a></th>
+              <th class="user_text">{{user.email}}</th>
+              <th class="user_text">{{user.created_at}}</th>
+                {% if user.user_level == 1 %}
+                    <th class="user_text">Online</th>
+                {% endif %}
+                {% if user.user_level == 0 %}
+                    <th class="user_text">Offline</th>
+                {% endif %}
+          {% else %}
+              <th>{{user.id}}</th>
+              <th><a href="{% url 'dashboard_show' user_id=user.id%}">{{user.first_name}} {{user.last_name}}</a></th>
+              <th>{{user.email}}</th>
+              <th>{{user.created_at}}</th>
+                {% if user.user_level == 1 %}
+                    <th>Online</th>
+                {% endif %}
+                {% if user.user_level == 0 %}
+                    <th>Offline</th>
+                {% endif %}
+          {% endif %}
         </tr>
-     </thead>
-     <tbody>
-       {%  for user in users %}
-          <tr>
-            {% if user.id == request.session.user%}
-                <th class="user_text">{{user.id}}</th>
-    						<th><a href="{% url 'dashboard_show' user_id=user.id%}">{{user.first_name}} {{user.last_name}}</a></th>
-                <th class="user_text">{{user.email}}</th>
-                <th class="user_text">{{user.created_at}}</th>
-                  {% if user.user_level == 1 %}
-                      <th class="user_text">Online</th>
-                  {% endif %}
-                  {% if user.user_level == 0 %}
-                      <th class="user_text">Offline</th>
-                  {% endif %}
-            {% else %}
-                <th>{{user.id}}</th>
-                <th><a href="{% url 'dashboard_show' user_id=user.id%}">{{user.first_name}} {{user.last_name}}</a></th>
-                <th>{{user.email}}</th>
-                <th>{{user.created_at}}</th>
-                  {% if user.user_level == 1 %}
-                      <th>Online</th>
-                  {% endif %}
-                  {% if user.user_level == 0 %}
-                      <th>Offline</th>
-                  {% endif %}
-            {% endif %}
-          </tr>
-        {% endfor %}
-     </tbody>
-  </table>
-  <a href="{% url 'dashboard_show' user_id=request.session.user%}">My page</a>
-</body>
-</html>
+      {% endfor %}
+   </tbody>
+</table>
+
+{% endblock %}
+
+{% block footer %}
+  2016 - MyBlog
+{% endblock %}

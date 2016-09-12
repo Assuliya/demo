@@ -1,25 +1,30 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Travel Buddy</title>
-  </head>
-  <body>
-    <h2>Welcome to the Travel club lobby!</h2>
-    {% if messages %}
-        <div class="errors">
-          {% for message in messages %}
-            <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-          {% endfor %}
-        </div>
-    {% endif %}
-    {% if request.session.user%}
-        <h2>{{request.session.user}} You're successfully logged in!</h2>
-        <a href="{% url 'travel_user' %}">My Page</a>
-        <a href="{% url 'log_logout'%}">Logout</a>
-    {% endif %}
-    {% if not request.session.user%}
-      <h2>Here goes the register redirect</h2>
-    {% endif %}
-  </body>
-</html>
+{% extends "main/base.html" %}
+
+{% block title %}
+  Travel Buddy Index Page
+{% endblock %}
+
+{% block css %}
+  {% load static %}<link rel="stylesheet" href="{% static 'travel/css/main.css'%}">
+{% endblock %}
+
+{% block name %}
+  Travel Club
+{% endblock %}
+
+{% block navi %}
+  <a href="{% url 'main_index'%}">Main</a> -
+  <a href="{% url 'log_success'%}">Success</a> -
+  <a href="{% url 'travel_index' %}">Travel lobby</a> -
+  <a href="{% url 'travel_user' %}">My Page</a> -
+  <a href="{% url 'log_logout'%}">Logout</a>
+{% endblock %}
+
+{% block content %}
+  <h2>Welcome to the Travel club lobby!</h2>
+  <h2>{{request.session.user}} You're successfully logged in!</h2>
+{% endblock %}
+
+{% block footer %}
+  2016 - MyBlog
+{% endblock %}

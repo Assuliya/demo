@@ -1,28 +1,24 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Travel Buddy</title>
-  </head>
-  <body>
-    <h2>Add a Trip</h2>
-    {% if messages %}
-        <div class="errors">
-          {% for message in messages %}
-            <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-          {% endfor %}
-        </div>
-    {% endif %}
-    <form action="{% url 'travel_add_travel' %}" method='post'>
-       {% csrf_token %}
-       Destination: <input type="text" name="destination">
-       Description: <input type="text" name="plan">
-       Travel Date From: <input type="date" name="start" min="{{time}}">
-       Travel Date To: <input type="date" name="end" min="{{time}}">
-       <input type="submit" value="Add">
-    </form>
-    <br>
-    <a href="{% url 'travel_user'%}">Home</a>
-    <a href="{% url 'log_logout'%}">Logout</a>
-  </body>
-</html>
+{% extends "travel_plan/index.html" %}
+
+{% block title %}
+  Travel Buddy Add Page
+{% endblock %}
+
+{% block content %}
+  <h2>Add a Trip</h2>
+  {% if messages %}
+      <div class="errors">
+        {% for message in messages %}
+          <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+        {% endfor %}
+      </div>
+  {% endif %}
+  <form action="{% url 'travel_add_travel' %}" method='post'>
+     {% csrf_token %}
+     Destination: <input type="text" name="destination">
+     Description: <input type="text" name="plan">
+     Travel Date From: <input type="date" name="start" min="{{time}}">
+     Travel Date To: <input type="date" name="end" min="{{time}}">
+     <input type="submit" value="Add">
+  </form>
+{% endblock %}
