@@ -6,7 +6,10 @@ from ..login_reg.models import User
 from collections import Counter
 
 def index(request):
-    return render(request, 'book_review/index.html')
+    books = Book.objects.all()
+    recent = Review.objects.all().order_by('-created_at')[:3]
+    context = {'books':books, 'recent':recent}
+    return render(request, 'book_review/index.html', context)
 
 def add(request):
     books = Book.objects.all()
@@ -25,12 +28,6 @@ def user(request, user_id):
     total = Review.objects.filter(user_id = user_id).count()
     context = {'user':user, 'reviews': reviews, 'total': total}
     return render(request, 'book_review/user.html', context)
-
-def books(request):
-    books = Book.objects.all()
-    recent = Review.objects.all().order_by('-created_at')[:3]
-    context = {'books':books, 'recent':recent}
-    return render(request, 'book_review/books.html', context)
 
 def specific(request, book_id):
     book = Book.objects.get(id = book_id)

@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>User Dashboard</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Login</title>
 </head>
 <body>
   <h2>Edit User {{user.id}}</h2>
@@ -15,7 +13,7 @@
        {% endfor %}
     </div>
   {% endif %}
-  <form class="edit" action="{% url 'dashboard_update' user_id=user.id %}" method="post">
+  <form class="edit" action="{% url 'log_update' user_id=user.id %}" method="post">
     {% csrf_token %}
     <label for="first_name">First Name</label>
     <input type="text" name="first_name" value="{{user.first_name}}">
@@ -29,7 +27,7 @@
     <input type="submit" value="Submit">
   </form>
   <br><br>
-  <form class="edit" action="{% url 'dashboard_update_pass' user_id=user.id %}" method="post">
+  <form class="edit" action="{% url 'log_update_pass' user_id=user.id %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="email" value="{{user.email}}">
     <label for="old_password">Existing Password:</label>

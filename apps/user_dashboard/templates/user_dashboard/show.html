@@ -26,8 +26,8 @@
     <h3>Updated at:</h3>
     <p>{{user.updated_at}}</p>
     {% if user.id == request.session.user%}
-      <a href="{% url 'dashboard_deletion_page' %}">Delete</a>
-      <a href="{% url 'dashboard_edit' user_id=request.session.user%}">Edit</a>
+      <a href="{% url 'log_deletion_page' %}">Delete</a>
+      <a href="{% url 'log_edit' user_id=request.session.user%}">Edit</a>
     {%endif%}
   </div>
   <br>

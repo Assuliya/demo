@@ -6,15 +6,12 @@ from models import Travel, Join
 from datetime import date
 
 def index(request):
-    return render(request, 'travel_plan/index.html')
-
-def user(request):
     user = User.objects.get(id = request.session['user'])
     travels = Travel.objects.filter(user_id = request.session['user'])
     joins = Join.objects.filter(user_id = request.session['user'])
     other = Travel.objects.exclude(join_travel__user_id_id = request.session['user']).order_by('start')
     context = {'travels':travels, 'user':user, 'other':other, 'joins': joins}
-    return render(request, 'travel_plan/user.html', context)
+    return render(request, 'travel_plan/index.html', context)
 
 def travel(request, travel_id):
     travel = Travel.objects.get(id = travel_id)
@@ -47,10 +44,10 @@ def add_travel(request):
         return redirect(reverse('add'))
     creator = User.objects.get(id = request.session['user'])
     travel = Travel.objects.create(user_id = creator, destination=request.POST['destination'], plan=request.POST['plan'], start=request.POST['start'], end=request.POST['end'])
-    return redirect(reverse('travel_user'))
+    return redirect(reverse('travel_index'))
 
 def join(request, travel_id):
     user = User.objects.get(id = request.session['user'])
     travel = Travel.objects.get(id = travel_id)
     join = Join.objects.create(travel_id = travel, user_id = user)
-    return redirect(reverse('travel_user'))
+    return redirect(reverse('travel_index'))

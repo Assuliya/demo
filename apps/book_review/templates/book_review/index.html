@@ -17,7 +17,6 @@
 <a href="{% url 'log_success'%}">Success</a> -
 <a href="{% url 'books_index' %}">Book lobby</a> -
 <a href="{% url 'books_user' user_id=request.session.user %}">My Page</a> -
-<a href="{% url 'books_books' %}">Books</a> -
 <a href="{% url 'books_add' %}">Add Book and Review</a> -
 <a href="{% url 'log_logout'%}">Logout</a>
 {% endblock %}
@@ -25,6 +24,20 @@
 {% block content %}
   <h2>Welcome to the Bookclub lobby!</h1>
   <h2>User {{request.session.user}}! You're successfully logged in!</h2>
+
+  <h2>Recent Book reviews:</h2>
+  <h4>******************************</h4>
+  {% for book in recent %}
+    <h3><a href="{% url 'books_specific' book_id=book.book_id.id%}">{{book.book_id.title}}</a></h3>
+    <p>Rating: {{book.rating}}</p>
+    <p><a href="{% url 'books_user' user_id=book.user_id.id%}">{{book.user_id.alias}}</a> says: {{book.review}}</p>
+    <p>Posted on {{book.created_at}}</p>
+    <h4>******************************</h4>
+  {% endfor %}
+  <h2>Other Books with reviews:</h2>
+  {% for book in books %}
+    <a href="{% url 'books_specific' book_id=book.id%}">{{book.title}}</a>
+  {% endfor %}
 {% endblock %}
 
 {% block footer %}
