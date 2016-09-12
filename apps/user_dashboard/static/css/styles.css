@@ -1,0 +1,42 @@
+* {
+  font-family: monospace;
+}
+
+input {
+  display: block;
+}
+
+.error{
+  color: red;
+}
+
+.messages{
+  border: grey solid;
+  padding: 5px;
+  margin: 5px 0px;
+}
+
+.comments{
+  padding: 5px;
+  border: grey dotted;
+  margin: 5px 0px 5px 300px;
+}
+
+#note{
+  background-color: darkred;
+  color: white;
+  padding: 5px;
+}
+
+#user_info{
+  border: solid darkred;
+  background-color: lightgrey;
+  padding: 5px;
+}
+#user_info h3{
+  color: darkred;
+}
+
+.user_text{
+  color: darkred;
+}

@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 import bcrypt, re
+from django.contrib.sessions.models import Session
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 PASS_REGEX = re.compile(r'\d.*[A-Z]|[A-Z].*\d')
@@ -21,21 +22,23 @@ class UserManager(models.Manager):
 
         if len(request.POST['username']) < 3:
             errors.append('Username can not be less than 3 characters')
-        try:
-            user = User.objects.get(username = request.POST['username'])
-            errors.append('This Username is already being used')
-        except ObjectDoesNotExist:
-            pass
 
         if len(request.POST['email']) < 1:
             errors.append('Email can not be empty')
         elif not EMAIL_REGEX.match(request.POST['email']):
             errors.append('Email is not valid')
-        try:
-            user = User.objects.get(email = request.POST['email'])
-            errors.append('This email is already being used')
-        except ObjectDoesNotExist:
-            pass
+
+        if request.POST['check'] == '0':
+            try:
+                user = User.objects.get(username = request.POST['username'])
+                errors.append('This Username is already being used')
+            except ObjectDoesNotExist:
+                pass
+            try:
+                user = User.objects.get(email = request.POST['email'])
+                errors.append('This email is already being used')
+            except ObjectDoesNotExist:
+                pass
 
         if len(errors) > 0:
             return (False, errors)
@@ -45,13 +48,13 @@ class UserManager(models.Manager):
     def validateRegPass(self, request):
         errors = []
         if len(request.POST['password']) < 1:
-            errors.append('Password can not be empty')
+            errors.append('The Password field can not be blank')
         elif len(request.POST['password']) < 8:
-            errors.append('Password should be more than 7 characters')
+            errors.append('The Password you choose should be more than 7 characters')
         elif not PASS_REGEX.match(request.POST['password']):
-            errors.append('Password should contain at least one apper case letter and one number')
+            errors.append('The Password you choose should contain at least one apper case letter and one number')
         if request.POST['password'] != request.POST['repeat']:
-            errors.append('Password repeat did not match the password')
+            errors.append('The Password repeat did not match the password')
         if len(errors) > 0:
             return (False, errors)
         return (True, errors)
@@ -64,11 +67,11 @@ class UserManager(models.Manager):
         try:
 	        user = User.objects.get(email=request.POST['email'])
 	        password = user.pw_hash.encode()
-	        loginpass = request.POST['password'].encode()
+	        loginpass = request.POST['old_password'].encode()
 	        if hashpw(loginpass, password) == password:
-	            return (True, user)
+	            return (True, errors)
 	        else:
-	            errors.append("Sorry, no password match")
+	            errors.append("Sorry, the password you typed in does not match the existing password")
 	            return (False, errors)
         except ObjectDoesNotExist:
             pass
@@ -84,6 +87,8 @@ class User(models.Model):
     email = models.CharField(max_length=45)
     username = models.CharField(max_length=45)
     pw_hash = models.CharField(max_length=255)
+    user_level = models.PositiveSmallIntegerField(default = 0)
+    check = models.PositiveSmallIntegerField(default = 0)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
 

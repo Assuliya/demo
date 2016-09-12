@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>User Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  </head>
+  <body>
+    {% if user.id == request.session.user%}
+      <h3 id="note">Your homepage!</h3>
+    {% endif %}
+    <div id="user_info">
+      <h3>First Name:</h3>
+      <p>{{user.first_name}}</p>
+      <h3>Last Name:</h3>
+      <p>{{user.last_name}}</p>
+      <h3>Email:</h3>
+      <p>{{user.email}}</p>
+      <h3>Username:</h3>
+      <p>{{user.username}}</p>
+      <h3>Created at:</h3>
+      <p>{{user.created_at}}</p>
+      <h3>Updated at:</h3>
+      <p>{{user.updated_at}}</p>
+      {% if not user.id == request.session.user%}
+        <a href="{% url 'dashboard_show' user_id=request.session.user%}">My page</a>
+      {%endif%}
+      {% if user.id == request.session.user%}
+        <a href="{% url 'log_logout' %}">Logout</a>
+        <a href="{% url 'dashboard_deletion_page' %}">Delete</a>
+        <a href="{% url 'dashboard_edit' user_id=request.session.user%}">Edit</a>
+      {%endif%}
+      <a href="{% url 'main_index' %}">Main</a>
+      <a href="{% url 'log_success' %}">Login success page</a>
+      <a href="{% url 'dashboard_dashboard'%}">Dashboard</a>
+    </div>
+    <br>
+    <form action="{% url 'dashboard_add_message' page_id=user.id %}" method='post'>
+      {% csrf_token %}
+      Add message: <input type="textarea" name="message">
+      <input type="submit" value="Add">
+    </form>
+
+    <div class="output">
+      {%  for message in messages %}
+         <div class="messages">
+           {% if message.user_id.id == request.session.user%}
+             <h3 class="user_text">{{message.message}}</h3>
+             <p class="user_text">{{message.user_id.first_name}} {{message.user_id.last_name}}</p>
+             <p class="user_text">{{message.created_at}}</p>
+           {% else %}
+             <h3>{{message.message}}</h3>
+             <p>{{message.user_id.first_name}} {{message.user_id.last_name}}</p>
+             <p>{{message.created_at}}</p>
+           {% endif %}
+           <form action="{% url 'dashboard_add_comment' message_id=message.id%}" method='post'>
+             {% csrf_token %}
+             Add comment: <input type="textarea" name="comment">
+             <input type="submit" value="Add">
+           </form>
+         </div>
+         {% for comment in comments %}
+          {% if comment.message_id.id == message.id%}
+            <div class="comments">
+              {% if comment.user_id.id == request.session.user%}
+                 <h3 class="user_text">{{comment.comment}}</h3>
+                 <p class="user_text">{{comment.user_id.first_name}} {{comment.user_id.last_name}}</p>
+                 <p class="user_text">{{message.created_at}}</p>
+              {% else %}
+                 <h3>{{comment.comment}}</h3>
+                 <p>{{comment.user_id.first_name}} {{comment.user_id.last_name}}</p>
+                 <p>{{message.created_at}}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+         {% endfor %}
+      {% endfor %}
+    </div>
+  </body>
+</html>

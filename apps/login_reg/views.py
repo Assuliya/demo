@@ -10,7 +10,7 @@ def index(request):
 
 def success(request):
     return render(request, 'login_reg_app/success.html')
-    
+
 def register_process(request):
     result = User.manager.validateReg(request)
     resultPass = User.manager.validateRegPass(request)
@@ -35,10 +35,15 @@ def print_messages(request, message_list):
 
 def log_user_in(request, user):
     request.session['user'] = user.id
+    user.user_level = 1
+    user.save(update_fields=None)
     return redirect(reverse('log_success'))
 
 def logout(request):
     user = User.manager.get(id=request.session['user'])
+    user.user_level = 0
+    # user.check = 0
+    user.save(update_fields=None)
     request.session.pop('user')
     return redirect(reverse('log_index'))
 

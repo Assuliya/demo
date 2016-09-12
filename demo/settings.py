@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'apps.main',
     'apps.login_reg',
     'apps.travel_plan',
-
+    'apps.user_dashboard',
     'apps.book_review',
     'django.contrib.admin',
     'django.contrib.auth',

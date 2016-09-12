@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>User Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <h2>Edit User {{user.id}}</h2>
+  {% if messages %}
+    <div class="errors">
+       {% for message in messages %}
+       <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+       {% endfor %}
+    </div>
+  {% endif %}
+  <form class="edit" action="{% url 'dashboard_update' user_id=user.id %}" method="post">
+    {% csrf_token %}
+    <label for="first_name">First Name</label>
+    <input type="text" name="first_name" value="{{user.first_name}}">
+    <label for="last_name">Last Name</label>
+    <input type="text" name="last_name" value="{{user.last_name}}">
+    <label for="email">Email</label>
+    <input type="email" name="email" value="{{user.email}}">
+    <label for="username">Username</label>
+    <input type="text" name="username" value="{{user.username}}">
+    <input type="hidden" name="check" value="1">
+    <input type="submit" value="Submit">
+  </form>
+  <br><br>
+  <form class="edit" action="{% url 'dashboard_update_pass' user_id=user.id %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="email" value="{{user.email}}">
+    <label for="old_password">Existing Password:</label>
+    <input type="password" name="old_password">
+    <label for="password">New Password:</label>
+    <input type="password" name="password">
+    <label for="repeat">Repeat the New Password:</label>
+    <input type="password" name="repeat">
+    <input type="submit" value="Submit">
+  </form>
+  <br>
+  <a href="{%url 'dashboard_show' user_id=user.id%}">Back</a>
+</body>
+</html>
